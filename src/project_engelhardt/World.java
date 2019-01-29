@@ -155,7 +155,7 @@ public class World extends JFrame
                     monsters[i][j] = monster;
                 }
             }
-        }ds
+        }
     }
     
     public void updateHealthLabel()
