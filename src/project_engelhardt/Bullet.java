@@ -39,12 +39,15 @@ public class Bullet extends JLabel implements Runnable
             case 1: 
                 while (yPosition >= 0)
                 {
-                    world.checkBulletCollision(xPosition, yPosition);
+                    if (world.checkBulletCollision(xPosition, yPosition))
+                    {
+                        break;
+                    }
                     updateLocation();
                     world.repaint();
                     try 
                     {
-                        Thread.sleep(10);
+                        Thread.sleep(20);
                     } 
                     catch (InterruptedException e)
                     {
@@ -57,12 +60,15 @@ public class Bullet extends JLabel implements Runnable
             case 2:
                 while (yPosition >= 0 || xPosition < world.getX())
                 {
-                    world.checkBulletCollision(xPosition, yPosition);
+                    if (world.checkBulletCollision(xPosition, yPosition))
+                    {
+                        break;
+                    }
                     updateLocation();
                     world.repaint();
                     try
                     {
-                        Thread.sleep(10);
+                        Thread.sleep(20);
                     }
                     catch (InterruptedException e)
                     {
@@ -82,12 +88,15 @@ public class Bullet extends JLabel implements Runnable
             case 3: 
                 while (xPosition < world.getX())
                 {
-                    world.checkBulletCollision(xPosition, yPosition);
+                    if (world.checkBulletCollision(xPosition, yPosition))
+                    {
+                        break;
+                    }
                     updateLocation();
                     world.repaint();
                     try 
                     {
-                        Thread.sleep(10);
+                        Thread.sleep(20);
                     } 
                     catch (InterruptedException e)
                     {
@@ -100,12 +109,15 @@ public class Bullet extends JLabel implements Runnable
             case 4:
                 while (yPosition < world.getY() || xPosition < world.getX())
                 {
-                    world.checkBulletCollision(xPosition, yPosition);
+                    if (world.checkBulletCollision(xPosition, yPosition))
+                    {
+                        break;
+                    }
                     updateLocation();
                     world.repaint();
                     try
                     {
-                        Thread.sleep(10);
+                        Thread.sleep(20);
                     }
                     catch (InterruptedException e)
                     {
@@ -125,12 +137,15 @@ public class Bullet extends JLabel implements Runnable
             case 5: 
                 while (yPosition < world.getY())
                 {
-                    world.checkBulletCollision(xPosition, yPosition);
+                    if (world.checkBulletCollision(xPosition, yPosition))
+                    {
+                        break;
+                    }
                     updateLocation();
                     world.repaint();
                     try 
                     {
-                        Thread.sleep(10);
+                        Thread.sleep(20);
                     } 
                     catch (InterruptedException e)
                     {
@@ -143,12 +158,15 @@ public class Bullet extends JLabel implements Runnable
             case 6:
                 while (yPosition < world.getY() || xPosition >= 0)
                 {
-                    world.checkBulletCollision(xPosition, yPosition);
+                    if (world.checkBulletCollision(xPosition, yPosition))
+                    {
+                        break;
+                    }
                     updateLocation();
                     world.repaint();
                     try
                     {
-                        Thread.sleep(10);
+                        Thread.sleep(20);
                     }
                     catch (InterruptedException e)
                     {
@@ -168,12 +186,15 @@ public class Bullet extends JLabel implements Runnable
             case 7: 
                 while (xPosition >= 0)
                 {
-                    world.checkBulletCollision(xPosition, yPosition);
+                    if (world.checkBulletCollision(xPosition, yPosition))
+                    {
+                        break;
+                    }
                     updateLocation();
                     world.repaint();
                     try 
                     {
-                        Thread.sleep(10);
+                        Thread.sleep(20);
                     } 
                     catch (InterruptedException e)
                     {
@@ -186,12 +207,15 @@ public class Bullet extends JLabel implements Runnable
             case 8:
                 while (yPosition >= 0 || xPosition >= 0)
                 {
-                    world.checkBulletCollision(xPosition, yPosition);
+                    if (world.checkBulletCollision(xPosition, yPosition))
+                    {
+                        break;
+                    }
                     updateLocation();
                     world.repaint();
                     try
                     {
-                        Thread.sleep(10);
+                        Thread.sleep(20);
                     }
                     catch (InterruptedException e)
                     {
@@ -208,6 +232,8 @@ public class Bullet extends JLabel implements Runnable
                     updateLocation();
                 }
         }
+        world.remove(this);
+        world.repaint();
     }
     
     public void updateLocation()
