@@ -30,13 +30,28 @@ public class Player extends JLabel implements MouseListener, Runnable
         this.setVisible(true);
     }
     
+    public int getHealth()
+    {
+        return health;
+    }
+    
+    public int getAmmo()
+    {
+        return ammo;
+    }
+    
     public void shoot()
     {
-        Bullet bullet = new Bullet(world, xPosition, yPosition, direction);
-        world.addBullet(bullet);
-        world.add(bullet);
-        Thread t = new Thread(bullet);
-        t.start();
+        if (ammo > 0)
+        {
+            Bullet bullet = new Bullet(world, xPosition, yPosition, direction);
+            world.addBullet(bullet);
+            world.add(bullet);
+            Thread t = new Thread(bullet);
+            t.start();
+            ammo--;
+            world.updateAmmoLabel();
+        }     
     }
     
     public int getXPosition()
@@ -116,10 +131,12 @@ public class Player extends JLabel implements MouseListener, Runnable
     public void reduceHealth(int damage)
     {
         health -= damage;
-        if (health < 0)
+        if (health <= 0)
         {
             health = 0;
+            world.gameOver();
         }
+        world.updateHealthLabel();
     }
     
     @Override

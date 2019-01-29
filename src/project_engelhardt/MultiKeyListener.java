@@ -68,6 +68,7 @@ public class MultiKeyListener implements KeyListener
             }
         }
         world.updatePlayerPosition();
+        world.checkPlayerCollision();
     }
     
 }

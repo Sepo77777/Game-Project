@@ -41,6 +41,7 @@ public class Bullet extends JLabel implements Runnable
                 {
                     if (world.checkBulletCollision(xPosition, yPosition))
                     {
+                        world.remove(this);
                         break;
                     }
                     updateLocation();
@@ -62,6 +63,7 @@ public class Bullet extends JLabel implements Runnable
                 {
                     if (world.checkBulletCollision(xPosition, yPosition))
                     {
+                        world.remove(this);
                         break;
                     }
                     updateLocation();
@@ -90,6 +92,7 @@ public class Bullet extends JLabel implements Runnable
                 {
                     if (world.checkBulletCollision(xPosition, yPosition))
                     {
+                        world.remove(this);
                         break;
                     }
                     updateLocation();
@@ -111,6 +114,7 @@ public class Bullet extends JLabel implements Runnable
                 {
                     if (world.checkBulletCollision(xPosition, yPosition))
                     {
+                        world.remove(this);
                         break;
                     }
                     updateLocation();
@@ -139,6 +143,7 @@ public class Bullet extends JLabel implements Runnable
                 {
                     if (world.checkBulletCollision(xPosition, yPosition))
                     {
+                        world.remove(this);
                         break;
                     }
                     updateLocation();
@@ -160,6 +165,7 @@ public class Bullet extends JLabel implements Runnable
                 {
                     if (world.checkBulletCollision(xPosition, yPosition))
                     {
+                        world.remove(this);
                         break;
                     }
                     updateLocation();
@@ -188,6 +194,7 @@ public class Bullet extends JLabel implements Runnable
                 {
                     if (world.checkBulletCollision(xPosition, yPosition))
                     {
+                        world.remove(this);
                         break;
                     }
                     updateLocation();
@@ -209,6 +216,7 @@ public class Bullet extends JLabel implements Runnable
                 {
                     if (world.checkBulletCollision(xPosition, yPosition))
                     {
+                        world.remove(this);
                         break;
                     }
                     updateLocation();
@@ -248,5 +256,4 @@ public class Bullet extends JLabel implements Runnable
         }
         
     }
-
 }

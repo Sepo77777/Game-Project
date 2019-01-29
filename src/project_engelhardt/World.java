@@ -1,12 +1,12 @@
 package project_engelhardt;
 
-import java.awt.Graphics;
-import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 public class World extends JFrame
 {
@@ -17,6 +17,9 @@ public class World extends JFrame
     private int x;
     private int y;
     private int difficulty;
+    private JLabel healthLabel;
+    private JLabel ammoLabel;
+    private KeyListener keyListener;
     private static final int ENEMY = 1;
     private static final int STRONGENEMY = 2;
     private static final int BANDAID = 3;
@@ -46,11 +49,18 @@ public class World extends JFrame
         this.setLayout(null);
         player = new Player(this, x / 2, y / 2);
         this.add(player);
-        this.addKeyListener(new MultiKeyListener(this));
+        keyListener = new MultiKeyListener(this);
+        this.addKeyListener(keyListener);
         this.addMouseListener(player);
         this.updatePlayerPosition();
         this.setVisible(true);
         spawnMonsters();
+        healthLabel = new JLabel("Health: 100");
+        this.add(healthLabel);
+        healthLabel.setBounds(x * 50 + 20, 0, 100, 50);
+        ammoLabel = new JLabel("Ammo: 30");
+        this.add(ammoLabel);
+        ammoLabel.setBounds(x * 50 + 20, 50, 100, 50);
     }
     
     public void increaseDifficulty()
@@ -85,7 +95,12 @@ public class World extends JFrame
            else if (grid[xPosition][yPosition] == ENEMY)
            {
                grid[xPosition][yPosition] = 0;
-               this.remove(monsters[xPosition][yPosition]);
+               if (monsters[xPosition][yPosition] != null)
+               {
+                   this.remove(monsters[xPosition][yPosition]);
+                   monsters[xPosition][yPosition].kill();
+                   monsters[xPosition][yPosition] = null;
+               } 
                return true;
            }
        }
@@ -123,11 +138,62 @@ public class World extends JFrame
             {
                 if (grid[i][j] == ENEMY)
                 {
-                    Monster monster = new Monster(this, i, j);
+                    Monster monster = new Monster(this, i, j, false);
                     this.add(monster);
                     monster.setVisible(true);
                     monster.setBounds(i*50, j*50, 50, 50);
                     monsters[i][j] = monster;
+                    Thread t = new Thread(monster);
+                    t.start();
+                }
+                if (grid[i][j] == STRONGENEMY)
+                {
+                    Monster monster = new Monster(this, i, j, true);
+                    this.add(monster);
+                    monster.setVisible(true);
+                    monster.setBounds(i*50, j*50, 50, 50);
+                    monsters[i][j] = monster;
+                }
+            }
+        }ds
+    }
+    
+    public void updateHealthLabel()
+    {
+        healthLabel.setText("Health: " + player.getHealth());
+    }
+    
+    public void updateAmmoLabel()
+    {
+        ammoLabel.setText("Ammo: " + player.getAmmo());
+    }
+    
+    public void updateMonsters(int oldXPosition, int oldYPosition, int newXPosition, int newYPosition)
+    {
+        if (oldXPosition >= 0 && oldXPosition < x && oldYPosition >= 0 && oldYPosition < y)
+        {
+            grid[oldXPosition][oldYPosition] = 0;
+            grid[newXPosition][newYPosition] = ENEMY;
+            monsters[newXPosition][newYPosition] = monsters[oldXPosition][oldYPosition];
+            monsters[oldXPosition][oldYPosition] = null;
+        }
+        
+    }
+    
+    public void gameOver()
+    {
+        JLabel gameOverLabel = new JLabel("GAME OVER");
+        this.add(gameOverLabel);
+        gameOverLabel.setBounds(x * 25, y * 25, 100, 50);
+        this.removeKeyListener(keyListener);
+        this.removeMouseListener(player);
+        for (int i = 0; i < x; i++)
+        {
+            for (int j = 0; j < y; j++)
+            {
+                if (monsters[i][j] != null)
+                {
+                    monsters[i][j].kill();
                 }
             }
         }
