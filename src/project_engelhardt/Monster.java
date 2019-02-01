@@ -11,6 +11,15 @@ public class Monster extends JLabel implements Runnable
     private boolean strong;
     private boolean killed;
     
+    public Monster(Monster another)
+    {
+        this.xPosition = another.xPosition;
+        this.yPosition = another.yPosition;
+        this.world = another.world;
+        this.strong = another.strong;
+        this.killed = another.killed;
+    }
+    
     public Monster(World world, int xPosition, int yPosition, boolean strong)
     {
         this.world = world;
@@ -44,86 +53,123 @@ public class Monster extends JLabel implements Runnable
                         if (yPosition > 1)
                         {
                             yPosition--;
-                            world.updateMonsters(xPosition, yPosition + 1, xPosition, yPosition);
+                            world.updateMonsters(xPosition, yPosition + 1, xPosition, yPosition, strong);
                         }
                         break;
                     case 2:
                         if (xPosition < world.getX() - 1)
                         {
                             xPosition++;
+                            world.updateMonsters(xPosition - 1, yPosition, xPosition, yPosition, strong);
                         }
                         if (yPosition > 1)
                         {
                             yPosition--;
+                            world.updateMonsters(xPosition, yPosition + 1, xPosition, yPosition, strong);
                         }
-                        world.updateMonsters(xPosition - 1, yPosition + 1, xPosition, yPosition);
                         break;
                     case 3:
                         if (xPosition < world.getX() - 1)
                         {
                             xPosition++;
+                            world.updateMonsters(xPosition - 1, yPosition, xPosition, yPosition, strong);
                         }
-                        world.updateMonsters(xPosition, yPosition + 1, xPosition, yPosition);
                         break;
                     case 4:
                         if (xPosition < world.getX() - 1)
                         {
                             xPosition++;
+                            world.updateMonsters(xPosition - 1, yPosition, xPosition, yPosition, strong);
                         }
                         if (yPosition < world.getY() - 1)
                         {
                             yPosition++;
+                            world.updateMonsters(xPosition, yPosition - 1, xPosition, yPosition, strong);
                         }
-                        world.updateMonsters(xPosition - 1, yPosition - 1, xPosition, yPosition);
                         break;
                     case 5:
                         if (yPosition < world.getY() - 1)
                         {
                             yPosition++;
+                            world.updateMonsters(xPosition, yPosition - 1, xPosition, yPosition, strong);
                         }
-                        world.updateMonsters(xPosition, yPosition - 1, xPosition, yPosition);
                         break;
                     case 6:
                         if (xPosition > 1)
                         {
                             xPosition--;
+                            world.updateMonsters(xPosition + 1, yPosition, xPosition, yPosition, strong);
                         }
                         if (yPosition < world.getY() - 1)
                         {
                             yPosition++;
-                        }
-                        world.updateMonsters(xPosition + 1, yPosition - 1, xPosition, yPosition);
+                            world.updateMonsters(xPosition, yPosition - 1, xPosition, yPosition, strong);
+                        }  
                         break;
                     case 7:
                         if (xPosition > 1)
                         {
                             xPosition--;
+                            world.updateMonsters(xPosition + 1, yPosition, xPosition, yPosition, strong);
                         }
-                        world.updateMonsters(xPosition + 1, yPosition, xPosition, yPosition);
                         break;
                     case 8:
                         if (xPosition > 1)
                         {
                             xPosition--;
+                            world.updateMonsters(xPosition + 1, yPosition, xPosition, yPosition, strong);
                         }
                         if (yPosition > 1)
                         {
                             yPosition--;
+                            world.updateMonsters(xPosition, yPosition + 1, xPosition, yPosition, strong);
                         }
-                        world.updateMonsters(xPosition + 1, yPosition + 1, xPosition, yPosition);
                         break;
-                }
-                updateLocation();
-                world.checkPlayerCollision();
-                world.repaint();
-                try 
+                }    
+            }
+            else
+            {
+                if (xPosition < world.getPlayer().getXPosition())
                 {
-                    Thread.sleep(500);
+                    xPosition++;
+                    world.updateMonsters(xPosition - 1, yPosition, xPosition, yPosition, strong);
+                }
+                else if (xPosition > world.getPlayer().getXPosition())
+                {
+                    xPosition--;
+                    world.updateMonsters(xPosition + 1, yPosition, xPosition, yPosition, strong);
+                }
+                if (yPosition < world.getPlayer().getYPosition())
+                {
+                    yPosition++;
+                    world.updateMonsters(xPosition, yPosition - 1, xPosition, yPosition, strong);
+                }
+                else if (yPosition > world.getPlayer().getYPosition())
+                {
+                    yPosition--;
+                    world.updateMonsters(xPosition, yPosition + 1, xPosition, yPosition, strong);
+                }
+            }
+            updateLocation();
+            if (world.checkPlayerCollision())
+            {
+                try
+                {
+                    Thread.sleep(3000);
                 } 
                 catch (InterruptedException e) 
                 {
                     e.printStackTrace();
                 }
+            }
+            world.repaint();
+            try 
+            {
+                Thread.sleep(500);
+            } 
+            catch (InterruptedException e) 
+            {
+                e.printStackTrace();
             }
         }
     }
@@ -144,5 +190,10 @@ public class Monster extends JLabel implements Runnable
     {
         killed = true;
         world.remove(this);
+    }
+    
+    public void hit()
+    {
+        strong = false;
     }
 }

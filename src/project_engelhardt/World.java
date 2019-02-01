@@ -90,6 +90,7 @@ public class World extends JFrame
            if (grid[xPosition][yPosition] == STRONGENEMY)
            {
                grid[xPosition][yPosition] = ENEMY;
+               monsters[xPosition][yPosition].hit();
                return true;
            }
            else if (grid[xPosition][yPosition] == ENEMY)
@@ -113,16 +114,19 @@ public class World extends JFrame
         bullets.add(bullet);
     }
     
-    public void checkPlayerCollision()
+    public boolean checkPlayerCollision()
     {
         if (grid[player.getXPosition()][player.getYPosition()] == ENEMY)
         {
             player.reduceHealth(10);
+            return true;
         }
         if (grid[player.getXPosition()][player.getYPosition()] == STRONGENEMY)
         {
             player.reduceHealth(20);
+            return true;
         }
+        return false;
     }
     
     public void updatePlayerPosition()
@@ -153,6 +157,8 @@ public class World extends JFrame
                     monster.setVisible(true);
                     monster.setBounds(i*50, j*50, 50, 50);
                     monsters[i][j] = monster;
+                    Thread t = new Thread(monster);
+                    t.start();
                 }
             }
         }
@@ -168,13 +174,20 @@ public class World extends JFrame
         ammoLabel.setText("Ammo: " + player.getAmmo());
     }
     
-    public void updateMonsters(int oldXPosition, int oldYPosition, int newXPosition, int newYPosition)
+    public void updateMonsters(int oldXPosition, int oldYPosition, int newXPosition, int newYPosition, boolean strong)
     {
         if (oldXPosition >= 0 && oldXPosition < x && oldYPosition >= 0 && oldYPosition < y)
         {
             grid[oldXPosition][oldYPosition] = 0;
-            grid[newXPosition][newYPosition] = ENEMY;
-            monsters[newXPosition][newYPosition] = monsters[oldXPosition][oldYPosition];
+            if (strong)
+            {
+                grid[newXPosition][newYPosition] = STRONGENEMY;
+            }
+            else
+            {
+                grid[newXPosition][newYPosition] = ENEMY;  
+            }
+            monsters[newXPosition][newYPosition] = new Monster(monsters[oldXPosition][oldYPosition]);
             monsters[oldXPosition][oldYPosition] = null;
         }
         
